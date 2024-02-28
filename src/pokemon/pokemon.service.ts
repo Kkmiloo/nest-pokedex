@@ -10,12 +10,17 @@ import { Model, isValidObjectId } from 'mongoose';
 import { Pokemon } from './entities/pokemon.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginationDto } from '../common/dto/pagination.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class PokemonService {
   constructor(
     @InjectModel(Pokemon.name) private readonly pokemonModel: Model<Pokemon>,
-  ) {}
+
+    private readonly configService: ConfigService,
+  ) {
+    console.log(configService.getOrThrow('port'));
+  }
 
   async create(createPokemonDto: CreatePokemonDto) {
     createPokemonDto.name = createPokemonDto.name.toLowerCase();
